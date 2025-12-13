@@ -838,14 +838,10 @@
             transform: translateX(4px);
         }
 
+        /* Animations */
         .spinning {
             animation: vinylSpin 2s linear infinite;
-            animation-play-state: running;
         }
-
-.paused {
-    animation-play-state: paused;
-}
 
         @keyframes vinylSpin {
             from { transform: rotate(0deg); }
@@ -1230,53 +1226,51 @@
             }, 50);
         }
 
-function startVinylAnimation() {
-    vinylRecord.classList.add('spinning');
-    vinylRecord.classList.remove('paused');
-}
-
-function stopVinylAnimation() {
-    vinylRecord.classList.add('paused');
-}
-
-playStartTime: null,
-pausedAt: 0,
-
-
-function startTonearmAnimation() {
-    const trackDuration = tracks[state.currentTrackIndex].duration * 1000;
-    const startOffset = state.pausedAt || 0;
-
-    state.playStartTime = performance.now() - startOffset;
-
-    function animate(timestamp) {
-        if (!state.isPlaying) return;
-
-        const elapsed = timestamp - state.playStartTime;
-        const progress = Math.min(elapsed / trackDuration, 1);
-
-        const eased = easeInOutCubic(progress);
-        const rotation = -45 + (50 * eased);
-
-        tonearmContainer.style.transform = `rotate(${rotation}deg)`;
-
-        if (progress < 1) {
-            state.tonearmAnimation = requestAnimationFrame(animate);
-        } else {
-            state.pausedAt = 0;
-            nextTrack();
+        function startVinylAnimation() {
+            vinylRecord.classList.add('spinning');
         }
-    }
 
-    state.tonearmAnimation = requestAnimationFrame(animate);
-}
+        function stopVinylAnimation() {
+            vinylRecord.classList.remove('spinning');
+        }
 
-function stopTonearmAnimation() {
-    if (!state.tonearmAnimation) return;
-    cancelAnimationFrame(state.tonearmAnimation);
-    state.tonearmAnimation = null;
-    state.pausedAt = performance.now() - state.playStartTime;
-}
+        function startTonearmAnimation() {
+            // Reset tonearm position
+            tonearmContainer.style.transform = 'rotate(-45deg)';
+            
+            // Use requestAnimationFrame for smooth animation
+            let startTime = null;
+            let rotation = -45;
+            const duration = tracks[state.currentTrackIndex].duration * 1000; // Convert to ms
+            
+            function animateTonearm(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease in out for smoother movement
+                const easeProgress = easeInOutCubic(progress);
+                rotation = -45 + (50 * easeProgress); // Move from -45 to 5 degrees
+                
+                tonearmContainer.style.transform = `rotate(${rotation}deg)`;
+                
+                if (progress < 1 && state.isPlaying) {
+                    state.tonearmAnimation = requestAnimationFrame(animateTonearm);
+                } else if (state.isPlaying) {
+                    // Track ended, go to next
+                    nextTrack();
+                }
+            }
+            
+            state.tonearmAnimation = requestAnimationFrame(animateTonearm);
+        }
+
+        function stopTonearmAnimation() {
+            if (state.tonearmAnimation) {
+                cancelAnimationFrame(state.tonearmAnimation);
+                state.tonearmAnimation = null;
+            }
+        }
 
         function resetTonearmAnimation() {
             tonearmContainer.style.transform = 'rotate(-45deg)';
