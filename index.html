@@ -1,7 +1,1401 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Coffee | Audiophile Streaming</title>
+    <meta property="og:title" content="Morning Coffee | Audiophile Streaming">
+    <meta property="og:description" content="Lossless audio meets analog warmth. The first streaming service for those who truly listen.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630&q=80">
+    <meta property="og:url" content="https://morningcoffee.vercel.app">
+    <style>
+        /* CSS Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --color-bg: #0c0c0c;
+            --color-surface: #121212;
+            --color-surface-light: #1a1a1a;
+            --color-text: #f0f0f0;
+            --color-text-secondary: #aaa;
+            --color-accent: #d4a574;
+            --color-accent-dark: #b08951;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 2rem;
+            --space-xl: 4rem;
+            
+            /* Typography */
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-md: 1rem;
+            --font-size-lg: 1.25rem;
+            --font-size-xl: 1.5rem;
+            --font-size-2xl: 2rem;
+            --font-size-3xl: 3rem;
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Screen */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity var(--transition-slow), visibility var(--transition-slow);
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--color-accent);
+            border-radius: 50%;
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: var(--space-lg) var(--space-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(12, 12, 12, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all var(--transition-base);
+        }
+
+        .nav.scrolled {
+            padding: var(--space-md) var(--space-xl);
+            background: rgba(12, 12, 12, 0.95);
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: var(--color-text);
+        }
+
+        .logo span {
+            color: var(--color-accent);
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: color var(--transition-fast);
+            position: relative;
+            padding: var(--space-xs) 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-accent);
+            transition: width var(--transition-base);
+        }
+
+        .nav-link:hover {
+            color: var(--color-text);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-button {
+            background: transparent;
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            color: var(--color-accent);
+            padding: var(--space-sm) var(--space-lg);
+            font-size: var(--font-size-sm);
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.1), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .nav-button:hover {
+            border-color: var(--color-accent);
+            background: rgba(212, 165, 116, 0.05);
+        }
+
+        .nav-button:hover::before {
+            left: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: var(--space-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 165, 116, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(18, 18, 18, 0.8) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s var(--transition-slow) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: var(--space-lg);
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        /* Mini Player */
+        .mini-player {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            width: 320px;
+            background: var(--color-surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: var(--space-md);
+            z-index: 90;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transform: translateY(0);
+            opacity: 0;
+            animation: slideInUp 0.6s 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mini-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .mini-player:hover {
+            transform: translateY(-2px);
+            border-color: rgba(212, 165, 116, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mini-player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .mini-player-title {
+            font-size: var(--font-size-xs);
+            color: var(--color-accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .expand-button {
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-md);
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            padding: var(--space-xs);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expand-button:hover {
+            color: var(--color-text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mini-player-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .mini-album-art {
+            width: 56px;
+            height: 56px;
+            background: var(--color-surface-light);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .mini-album-art::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-radial-gradient(
+                    circle at center,
+                    transparent 0,
+                    transparent 1px,
+                    rgba(255, 255, 255, 0.02) 1px,
+                    rgba(255, 255, 255, 0.02) 2px
+                );
+        }
+
+        .mini-album-art::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: var(--color-surface);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .mini-track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mini-track-title {
+            font-size: var(--font-size-md);
+            font-weight: 400;
+            margin-bottom: var(--space-xs);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-track-artist {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mini-player-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        .control-button {
+            background: transparent;
+            border: none;
+            color: var(--color-text);
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            padding: var(--space-xs);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.1);
+        }
+
+        .play-button {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            width: 40px;
+            height: 40px;
+        }
+
+        .play-button:hover {
+            background: var(--color-accent-dark);
+            transform: scale(1.05);
+        }
+
+        /* Vinyl Player - Full Screen */
+        .vinyl-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-slow);
+        }
+
+        .vinyl-player.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .player-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .close-player {
+            position: absolute;
+            top: var(--space-xl);
+            right: var(--space-xl);
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            z-index: 201;
+            padding: var(--space-sm);
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-player:hover {
+            color: var(--color-text);
+            background: rgba(255, 255, 255, 0.05);
+            transform: rotate(90deg);
+        }
+
+        /* Turntable */
+        .turntable {
+            position: relative;
+            width: min(80vw, 800px);
+            height: min(80vw, 800px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .turntable::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 110%;
+            height: 110%;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        /* Vinyl Record */
+        .vinyl-record {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at center, #050505 0%, #000 100%),
+                repeating-radial-gradient(
+                    circle at center,
+                    transparent 0,
+                    transparent 0.5px,
+                    rgba(255, 255, 255, 0.015) 0.5px,
+                    rgba(255, 255, 255, 0.015) 1px
+                );
+            box-shadow: 
+                inset 0 0 60px rgba(0, 0, 0, 0.8),
+                0 0 80px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.03);
+            transition: transform var(--transition-base);
+            will-change: transform;
+        }
+
+        .vinyl-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: 
+                radial-gradient(circle at center, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 50%;
+            border: 8px solid #050505;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .vinyl-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text);
+            font-size: var(--font-size-sm);
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .vinyl-label span {
+            font-weight: 300;
+        }
+
+        .vinyl-label span:first-child {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xs);
+            letter-spacing: 2px;
+        }
+
+        /* Tonearm */
+        .tonearm-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            transform-origin: 60px 60px;
+            z-index: 10;
+            transition: transform var(--transition-slow);
+        }
+
+        .tonearm {
+            position: absolute;
+            width: 300px;
+            height: 4px;
+            background: linear-gradient(to right, 
+                #1a1a1a 0%,
+                #2a2a2a 20%,
+                #333 50%,
+                #2a2a2a 80%,
+                #1a1a1a 100%);
+            border-radius: 2px;
+            transform-origin: 60px 2px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .tonearm-head {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #222, #333);
+            border-radius: 50%;
+            border: 2px solid #2a2a2a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .tonearm-head::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--color-accent);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .tonearm-base {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.6),
+                0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .tonearm-counterweight {
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #222, #2a2a2a);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Player Controls */
+        .player-controls {
+            position: absolute;
+            bottom: var(--space-xl);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            z-index: 10;
+        }
+
+        .player-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-text);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            font-size: var(--font-size-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 165, 116, 0.2), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .player-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(212, 165, 116, 0.3);
+            transform: scale(1.05);
+        }
+
+        .player-button:hover::before {
+            left: 100%;
+        }
+
+        .play-pause-button {
+            width: 72px;
+            height: 72px;
+            background: var(--color-accent);
+            color: var(--color-bg);
+            font-size: var(--font-size-xl);
+            border: none;
+        }
+
+        .play-pause-button:hover {
+            background: var(--color-accent-dark);
+            transform: scale(1.05);
+        }
+
+        /* Track Info */
+        .track-info {
+            position: absolute;
+            top: var(--space-xl);
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .track-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 300;
+            margin-bottom: var(--space-sm);
+            letter-spacing: 1px;
+            color: var(--color-text);
+        }
+
+        .track-artist {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Recruitment Section */
+        .recruitment-section {
+            padding: var(--space-xl);
+            max-width: 800px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .recruitment-title {
+            font-size: var(--font-size-xl);
+            font-weight: 300;
+            color: var(--color-text);
+            margin-bottom: var(--space-lg);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .recruitment-text {
+            font-size: var(--font-size-lg);
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            font-weight: 300;
+        }
+
+        .recruitment-highlight {
+            font-size: var(--font-size-lg);
+            color: var(--color-accent);
+            margin: var(--space-xl) 0;
+            padding: var(--space-lg);
+            background: rgba(212, 165, 116, 0.05);
+            border-left: 2px solid var(--color-accent);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .recruitment-button {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            padding: var(--space-md) var(--space-xl);
+            font-size: var(--font-size-sm);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-weight: 400;
+        }
+
+        .recruitment-button:hover {
+            background: rgba(212, 165, 116, 0.1);
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .recruitment-button i {
+            transition: transform var(--transition-base);
+        }
+
+        .recruitment-button:hover i {
+            transform: translateX(4px);
+        }
+
+        .spinning {
+            animation: vinylSpin 2s linear infinite;
+            animation-play-state: running;
+        }
+
+.paused {
+    animation-play-state: paused;
+}
+
+        @keyframes vinylSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --space-xl: 2rem;
+                --space-lg: 1.5rem;
+            }
+
+            .nav {
+                padding: var(--space-md) var(--space-lg);
+            }
+
+            .nav.scrolled {
+                padding: var(--space-sm) var(--space-lg);
+            }
+
+            .nav-links {
+                gap: var(--space-lg);
+            }
+
+            .hero {
+                padding: var(--space-lg);
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 8vw, 4rem);
+            }
+
+            .mini-player {
+                width: calc(100% - 2rem);
+                right: var(--space-md);
+                bottom: var(--space-md);
+            }
+
+            .turntable {
+                width: 95vw;
+                height: 95vw;
+            }
+
+            .tonearm-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .player-controls {
+                gap: var(--space-md);
+            }
+
+            .player-button {
+                width: 48px;
+                height: 48px;
+            }
+
+            .play-pause-button {
+                width: 56px;
+                height: 56px;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Performance Optimizations */
+        .will-change-transform {
+            will-change: transform;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="logo">morning<span>coffee</span></div>
+        <div class="nav-links">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#technology" class="nav-link">Technology</a>
+            <a href="#philosophy" class="nav-link">Philosophy</a>
+            <button class="nav-button" onclick="scrollToRecruitment()">Join Early</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Listen like it matters</h1>
+            <p class="hero-subtitle">Lossless audio streaming meets analog warmth. The first service designed for those who don't just hear music, but listen to it.</p>
+            <button class="nav-button" onclick="openVinylPlayer()">Experience the Player</button>
+        </div>
+    </section>
+
+    <!-- Mini Player -->
+    <div class="mini-player" onclick="openVinylPlayer()">
+        <div class="mini-player-header">
+            <div class="mini-player-title">Now Playing</div>
+            <button class="expand-button" onclick="openVinylPlayer(event)">
+                <i class="fas fa-expand"></i>
+            </button>
+        </div>
+        <div class="mini-player-info">
+            <div class="mini-album-art"></div>
+            <div class="mini-track-info">
+                <div class="mini-track-title" id="miniTrackTitle">Morning Light</div>
+                <div class="mini-track-artist" id="miniTrackArtist">Kiasmos</div>
+            </div>
+        </div>
+        <div class="mini-player-controls" onclick="event.stopPropagation()">
+            <button class="control-button" onclick="prevTrack(event)">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-button play-button" id="miniPlayButton" onclick="togglePlay(event)">
+                <i class="fas fa-play" id="miniPlayIcon"></i>
+            </button>
+            <button class="control-button" onclick="nextTrack(event)">
+                <i class="fas fa-step-forward"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Full Screen Vinyl Player -->
+    <div class="vinyl-player" id="vinylPlayer">
+        <button class="close-player" onclick="closeVinylPlayer()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="player-container">
+            <div class="track-info">
+                <div class="track-title" id="trackTitle">Morning Light</div>
+                <div class="track-artist" id="trackArtist">Kiasmos</div>
+            </div>
+            
+            <div class="turntable">
+                <div class="vinyl-record" id="vinylRecord">
+                    <div class="vinyl-center"></div>
+                    <div class="vinyl-label">
+                        <span>morningcoffee</span>
+                        <span>Analog</span>
+                    </div>
+                </div>
+                <div class="tonearm-container" id="tonearmContainer">
+                    <div class="tonearm-base"></div>
+                    <div class="tonearm" id="tonearm">
+                        <div class="tonearm-head"></div>
+                        <div class="tonearm-counterweight"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="player-controls">
+                <button class="player-button" onclick="prevTrack(event)">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="player-button play-pause-button" id="playButton" onclick="togglePlay(event)">
+                    <i class="fas fa-play" id="playIcon"></i>
+                </button>
+                <button class="player-button" onclick="nextTrack(event)">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recruitment Section -->
+    <section class="recruitment-section" id="recruitment">
+        <h2 class="recruitment-title">Build the Future of Listening</h2>
+        <p class="recruitment-text">
+            This prototype represents a new approach to audio streaming—one that values intentional listening over passive consumption. We're building a platform where every technical decision serves the musical experience.
+        </p>
+        
+        <div class="recruitment-highlight">
+            We are assembling a small, focused team to bring morningcoffee to life. This includes engineers who understand audio at a fundamental level, designers who value subtlety over spectacle, and product thinkers who believe technology should deepen our connection to art.
+        </div>
+        
+        <p class="recruitment-text">
+            If you're interested in building streaming infrastructure that prioritizes audio quality, creating interfaces that disappear, or working on novel approaches to music discovery, we should speak.
+        </p>
+        
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSceoEoBzkHLj8a0a8RuT0ix_MNtO1k6zcKFI20RqsYS73myiw/viewform" 
+           target="_blank" 
+           class="recruitment-button">
+            Apply as Founding Engineer
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </section>
+
+    <script>
+        // Performance optimization flag
+        const PERFORMANCE_MODE = true;
+
+        // State Management
+        const state = {
+            isPlaying: false,
+            isFullscreen: false,
+            currentTrackIndex: 0,
+            tonearmAnimation: null,
+            vinylAnimation: null,
+            isAnimating: false,
+            lastFrameTime: 0
+        };
+
+        // Track Data
+        const tracks = [
+            { title: "Morning Light", artist: "Kiasmos", duration: 316 },
+            { title: "Breathe", artist: "Télépopmusik", duration: 284 },
+            { title: "Porcelain", artist: "Moby", duration: 257 },
+            { title: "All I Need", artist: "Air", duration: 274 }
+        ];
+
+        // DOM Elements
+        const loading = document.getElementById('loading');
+        const nav = document.getElementById('nav');
+        const vinylPlayer = document.getElementById('vinylPlayer');
+        const vinylRecord = document.getElementById('vinylRecord');
+        const tonearmContainer = document.getElementById('tonearmContainer');
+        const tonearm = document.getElementById('tonearm');
+        const playButton = document.getElementById('playButton');
+        const playIcon = document.getElementById('playIcon');
+        const miniPlayButton = document.getElementById('miniPlayButton');
+        const miniPlayIcon = document.getElementById('miniPlayIcon');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const miniTrackTitle = document.getElementById('miniTrackTitle');
+        const miniTrackArtist = document.getElementById('miniTrackArtist');
+
+        // Initialize
+        function init() {
+            // Hide loading screen
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 800);
+
+            // Set initial track info
+            updateTrackInfo();
+
+            // Setup scroll handler for nav
+            window.addEventListener('scroll', handleScroll);
+
+            // Setup resize handler for performance
+            window.addEventListener('resize', throttle(handleResize, 250));
+
+            // Setup keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboard);
+
+            // Setup touch interactions
+            setupTouchEvents();
+
+            // Performance: mark elements that will be animated
+            if (PERFORMANCE_MODE) {
+                vinylRecord.classList.add('will-change-transform', 'backface-hidden');
+                tonearmContainer.classList.add('will-change-transform', 'backface-hidden');
+                tonearm.classList.add('will-change-transform', 'backface-hidden');
+            }
+        }
+
+        // Scroll handler
+        function handleScroll() {
+            const scrolled = window.scrollY > 50;
+            nav.classList.toggle('scrolled', scrolled);
+        }
+
+        // Resize handler
+        function handleResize() {
+            // Reset tonearm position if playing
+            if (state.isPlaying) {
+                resetTonearmAnimation();
+            }
+        }
+
+        // Keyboard handler
+        function handleKeyboard(e) {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextTrack();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevTrack();
+                    break;
+                case 'Escape':
+                    if (state.isFullscreen) {
+                        closeVinylPlayer();
+                    }
+                    break;
+                case 'KeyF':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        if (!state.isFullscreen) {
+                            openVinylPlayer();
+                        }
+                    }
+                    break;
+            }
+        }
+
+        // Touch events for mobile
+        function setupTouchEvents() {
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            });
+
+            document.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - touchEndY;
+                
+                // Only consider horizontal swipes
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        nextTrack();
+                    } else {
+                        prevTrack();
+                    }
+                }
+            });
+
+            // Prevent zoom on vinyl player
+            vinylPlayer.addEventListener('touchmove', (e) => {
+                if (state.isFullscreen) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        }
+
+        // Player Functions
+        function togglePlay(e) {
+            if (e) e.stopPropagation();
+            
+            if (state.isAnimating) return;
+            state.isAnimating = true;
+
+            state.isPlaying = !state.isPlaying;
+
+            // Update UI
+            const playIconClass = state.isPlaying ? 'fa-pause' : 'fa-play';
+            playIcon.className = `fas ${playIconClass}`;
+            miniPlayIcon.className = `fas ${playIconClass}`;
+
+            if (state.isPlaying) {
+                // Start playing
+                startVinylAnimation();
+                startTonearmAnimation();
+            } else {
+                // Pause
+                stopVinylAnimation();
+                stopTonearmAnimation();
+            }
+
+            // Reset animation lock
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 50);
+        }
+
+function startVinylAnimation() {
+    vinylRecord.classList.add('spinning');
+    vinylRecord.classList.remove('paused');
+}
+
+function stopVinylAnimation() {
+    vinylRecord.classList.add('paused');
+}
+
+playStartTime: null,
+pausedAt: 0,
+
+
+function startTonearmAnimation() {
+    const trackDuration = tracks[state.currentTrackIndex].duration * 1000;
+    const startOffset = state.pausedAt || 0;
+
+    state.playStartTime = performance.now() - startOffset;
+
+    function animate(timestamp) {
+        if (!state.isPlaying) return;
+
+        const elapsed = timestamp - state.playStartTime;
+        const progress = Math.min(elapsed / trackDuration, 1);
+
+        const eased = easeInOutCubic(progress);
+        const rotation = -45 + (50 * eased);
+
+        tonearmContainer.style.transform = `rotate(${rotation}deg)`;
+
+        if (progress < 1) {
+            state.tonearmAnimation = requestAnimationFrame(animate);
+        } else {
+            state.pausedAt = 0;
+            nextTrack();
+        }
+    }
+
+    state.tonearmAnimation = requestAnimationFrame(animate);
+}
+
+function stopTonearmAnimation() {
+    if (!state.tonearmAnimation) return;
+    cancelAnimationFrame(state.tonearmAnimation);
+    state.tonearmAnimation = null;
+    state.pausedAt = performance.now() - state.playStartTime;
+}
+
+        function resetTonearmAnimation() {
+            tonearmContainer.style.transform = 'rotate(-45deg)';
+            if (state.isPlaying) {
+                stopTonearmAnimation();
+                startTonearmAnimation();
+            }
+        }
+
+        function nextTrack(e) {
+            if (e) e.stopPropagation();
+            if (state.isAnimating) return;
+            state.isAnimating = true;
+
+            state.currentTrackIndex = (state.currentTrackIndex + 1) % tracks.length;
+            updateTrackInfo();
+            
+            if (state.isPlaying) {
+                resetTonearmAnimation();
+            }
+
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 50);
+        }
+
+        function prevTrack(e) {
+            if (e) e.stopPropagation();
+            if (state.isAnimating) return;
+            state.isAnimating = true;
+
+            state.currentTrackIndex = (state.currentTrackIndex - 1 + tracks.length) % tracks.length;
+            updateTrackInfo();
+            
+            if (state.isPlaying) {
+                resetTonearmAnimation();
+            }
+
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 50);
+        }
+
+        function updateTrackInfo() {
+            const track = tracks[state.currentTrackIndex];
+            trackTitle.textContent = track.title;
+            trackArtist.textContent = track.artist;
+            miniTrackTitle.textContent = track.title;
+            miniTrackArtist.textContent = track.artist;
+        }
+
+        // View Transitions
+        function openVinylPlayer(e) {
+            if (e) e.stopPropagation();
+            
+            // Prevent opening if already animating
+            if (state.isAnimating) return;
+            state.isAnimating = true;
+
+            // Add active class with delay for animation
+            setTimeout(() => {
+                vinylPlayer.classList.add('active');
+                state.isFullscreen = true;
+                document.body.style.overflow = 'hidden';
+            }, 10);
+
+            // Reset animation lock
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 300);
+        }
+
+        function closeVinylPlayer() {
+            if (state.isAnimating) return;
+            state.isAnimating = true;
+
+            vinylPlayer.classList.remove('active');
+            state.isFullscreen = false;
+            document.body.style.overflow = '';
+
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 300);
+        }
+
+        function scrollToRecruitment() {
+            document.getElementById('recruitment').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Utility Functions
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            };
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        // Close player when clicking on backdrop
+        vinylPlayer.addEventListener('click', (e) => {
+            if (e.target === vinylPlayer) {
+                closeVinylPlayer();
+            }
+        });
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
 </body>
+</html>
