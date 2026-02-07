@@ -16,7 +16,486 @@
             --success: #2E8B57;
             --error: #DC3545;
         }
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
         
+        body {
+            background: var(--coffee-light);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Header - Updated for Navbar Style */
+        .header {
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(74, 44, 42, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-branding {
+            text-align: left;
+        }
+        
+        .prototype-label {
+            background: var(--coffee-accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        h1 {
+            color: var(--coffee-dark);
+            font-size: 2.2rem;
+            line-height: 1.1;
+        }
+        
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* The New Header Button (Replacing Login) */
+        .header-recruit-btn {
+            background: transparent;
+            border: 2px solid var(--coffee-accent);
+            color: var(--coffee-accent);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-recruit-btn:hover {
+            background: var(--coffee-accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 90, 43, 0.2);
+        }
+        
+        /* Main Interface */
+        .interface {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .interface {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            .header-branding {
+                text-align: center;
+            }
+        }
+        
+        /* Player Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(74, 44, 42, 0.08);
+        }
+        
+        .section-title {
+            color: var(--coffee-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--coffee-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .icon {
+            font-size: 1.25rem;
+        }
+        
+        /* Now Playing */
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .album-art {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--coffee-dark), var(--coffee-accent));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+        
+        .track-info h3 {
+            margin-bottom: 0.25rem;
+            color: var(--coffee-dark);
+        }
+        
+        .track-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--coffee-light);
+            color: var(--coffee-dark);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            background: var(--coffee-accent);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--coffee-dark);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--coffee-accent);
+        }
+        
+        /* Playlist */
+        .playlist {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .playlist-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--coffee-light);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .playlist-item:hover {
+            background: var(--coffee-light);
+        }
+        
+        .playlist-item.active {
+            background: rgba(139, 90, 43, 0.1);
+            border-left: 3px solid var(--coffee-accent);
+        }
+        
+        .track-index {
+            color: var(--coffee-accent);
+            font-weight: 600;
+            width: 24px;
+        }
+        
+        /* Upload Section */
+        .upload-area {
+            border: 2px dashed var(--coffee-accent);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: rgba(139, 90, 43, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: rgba(139, 90, 43, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 2.5rem;
+            color: var(--coffee-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-subtext {
+            color: var(--coffee-accent);
+            font-size: 0.9rem;
+        }
+        
+        /* Uploaded Files */
+        .uploaded-files {
+            margin-top: 1.5rem;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--coffee-light);
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .file-icon {
+            color: var(--coffee-accent);
+        }
+        
+        /* Status & Progress */
+        .status {
+            padding: 1rem;
+            background: rgba(139, 90, 43, 0.1);
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--coffee-light);
+            border-radius: 3px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--coffee-accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Prototype Notes */
+        .prototype-notes {
+            background: rgba(74, 44, 42, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-left: 4px solid var(--coffee-accent);
+        }
+        
+        .prototype-notes h3 {
+            color: var(--coffee-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .notes-list {
+            list-style-position: inside;
+            color: var(--text-light);
+        }
+        
+        .notes-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(74, 44, 42, 0.1);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .version {
+            display: inline-block;
+            background: var(--coffee-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-family: monospace;
+            margin-top: 0.5rem;
+        }
+        
+        /* Modal for Recruitment Page */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            background: var(--coffee-dark);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .recruitment-info {
+            margin-bottom: 2rem;
+        }
+        
+        .recruitment-info p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+        
+        .role-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .role-list li {
+            padding: 0.75rem;
+            background: var(--coffee-light);
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .form-notice {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(139, 90, 43, 0.1);
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .google-form-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+        }
+        
+        .google-form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
         /* Previous CSS remains the same, adding new styles below */
         
         /* Auth Modal */
