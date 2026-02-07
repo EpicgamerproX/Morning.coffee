@@ -16,7 +16,8 @@
             --success: #2E8B57;
             --error: #DC3545;
         }
-         * {
+        
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -37,7 +38,7 @@
             min-height: 100vh;
         }
         
-        /* Header - Updated for Navbar Style */
+        /* Header */
         .header {
             margin-bottom: 3rem;
             padding-bottom: 1.5rem;
@@ -75,7 +76,7 @@
             margin-top: 0.25rem;
         }
 
-        /* The New Header Button (Replacing Login) */
+        /* Header Button */
         .header-recruit-btn {
             background: transparent;
             border: 2px solid var(--coffee-accent);
@@ -207,38 +208,6 @@
             background: var(--coffee-accent);
         }
         
-        /* Playlist */
-        .playlist {
-            list-style: none;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .playlist-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--coffee-light);
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .playlist-item:hover {
-            background: var(--coffee-light);
-        }
-        
-        .playlist-item.active {
-            background: rgba(139, 90, 43, 0.1);
-            border-left: 3px solid var(--coffee-accent);
-        }
-        
-        .track-index {
-            color: var(--coffee-accent);
-            font-weight: 600;
-            width: 24px;
-        }
-        
         /* Upload Section */
         .upload-area {
             border: 2px dashed var(--coffee-accent);
@@ -320,184 +289,6 @@
             transition: width 0.3s;
         }
         
-        /* Prototype Notes */
-        .prototype-notes {
-            background: rgba(74, 44, 42, 0.05);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-top: 3rem;
-            border-left: 4px solid var(--coffee-accent);
-        }
-        
-        .prototype-notes h3 {
-            color: var(--coffee-dark);
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .notes-list {
-            list-style-position: inside;
-            color: var(--text-light);
-        }
-        
-        .notes-list li {
-            margin-bottom: 0.5rem;
-            padding-left: 0.5rem;
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(74, 44, 42, 0.1);
-            color: var(--text-light);
-            font-size: 0.9rem;
-        }
-        
-        .version {
-            display: inline-block;
-            background: var(--coffee-light);
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-family: monospace;
-            margin-top: 0.5rem;
-        }
-        
-        /* Modal for Recruitment Page */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 1rem;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalFadeIn 0.3s ease;
-        }
-        
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .modal-header {
-            padding: 1.5rem;
-            background: var(--coffee-dark);
-            color: white;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h2 {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-        }
-        
-        .close-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .recruitment-info {
-            margin-bottom: 2rem;
-        }
-        
-        .recruitment-info p {
-            margin-bottom: 1rem;
-            color: var(--text-light);
-        }
-        
-        .role-list {
-            list-style: none;
-            margin: 1.5rem 0;
-        }
-        
-        .role-list li {
-            padding: 0.75rem;
-            background: var(--coffee-light);
-            margin-bottom: 0.5rem;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .form-container {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-        
-        .form-notice {
-            text-align: center;
-            padding: 1rem;
-            background: rgba(139, 90, 43, 0.1);
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .google-form-btn {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #4285F4, #34A853);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s;
-            margin-top: 1.5rem;
-        }
-        
-        .google-form-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
-        }
-        /* Previous CSS remains the same, adding new styles below */
-        
         /* Auth Modal */
         .auth-modal {
             position: fixed;
@@ -519,6 +310,11 @@
             width: 100%;
             max-width: 400px;
             animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .auth-tabs {
@@ -621,12 +417,6 @@
             background: rgba(74, 44, 42, 0.1);
         }
         
-        /* Audio Player Enhancements */
-        .audio-player {
-            width: 100%;
-            margin: 1rem 0;
-        }
-        
         /* Upload restrictions */
         .upload-restricted {
             opacity: 0.7;
@@ -643,14 +433,71 @@
             color: var(--text-light);
         }
         
-        .audio-controls {
-            margin-top: 0.5rem;
+        /* Track List */
+        .track-list-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--coffee-light);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
-        .audio-controls button {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
+        .track-list-item:hover {
+            background: var(--coffee-light);
+        }
+        
+        .track-index {
+            color: var(--coffee-accent);
+            font-weight: 600;
+            width: 24px;
+        }
+        
+        /* Prototype Notes */
+        .prototype-notes {
+            background: rgba(74, 44, 42, 0.05);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-left: 4px solid var(--coffee-accent);
+        }
+        
+        .prototype-notes h3 {
+            color: var(--coffee-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .notes-list {
+            list-style-position: inside;
+            color: var(--text-light);
+        }
+        
+        .notes-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(74, 44, 42, 0.1);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .version {
+            display: inline-block;
+            background: var(--coffee-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-family: monospace;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -772,57 +619,76 @@
             </section>
         </main>
         
-        <!-- Auth Modal -->
-        <div class="auth-modal" id="auth-modal">
-            <div class="auth-content">
-                <div class="auth-tabs">
-                    <button class="auth-tab active" data-tab="login">Sign In</button>
-                    <button class="auth-tab" data-tab="signup">Sign Up</button>
-                </div>
-                
-                <div id="login-form" class="auth-form">
-                    <div class="auth-error" id="login-error"></div>
-                    <input type="email" id="login-email" placeholder="Email" required>
-                    <input type="password" id="login-password" placeholder="Password" required>
-                    <button id="login-submit">Sign In</button>
-                    <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
-                        Demo: test@example.com / password123
-                    </p>
-                </div>
-                
-                <div id="signup-form" class="auth-form" style="display: none;">
-                    <div class="auth-error" id="signup-error"></div>
-                    <input type="email" id="signup-email" placeholder="Email" required>
-                    <input type="password" id="signup-password" placeholder="Password (min 6 chars)" required>
-                    <input type="text" id="signup-username" placeholder="Username" required>
-                    <button id="signup-submit">Create Account</button>
-                </div>
+        <section class="prototype-notes">
+            <h3>
+                <span class="icon">🚧</span>
+                Prototype Notes
+            </h3>
+            <ul class="notes-list">
+                <li>This is a working prototype v0.3 - now with real Supabase backend</li>
+                <li>Sign up/in with email to upload audio files (MP3, WAV)</li>
+                <li>Anyone can play uploaded music without signing in</li>
+                <li>Files are stored in Supabase Storage</li>
+                <li>Next: Playlists, likes, search functionality</li>
+                <li><strong>Debugging:</strong> Check browser console for errors</li>
+            </ul>
+        </section>
+        
+        <footer class="footer">
+            <p>Morning.coffee - Modern Audio Streaming</p>
+            <p>Powered by Supabase • Styled for 2024</p>
+            <div class="version">v0.3.2 • Clean Code Edition</div>
+        </footer>
+    </div>
+    
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-content">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Sign In</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <div id="login-form" class="auth-form">
+                <div class="auth-error" id="login-error"></div>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button id="login-submit">Sign In</button>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                    Demo: test@example.com / password123
+                </p>
+            </div>
+            
+            <div id="signup-form" class="auth-form" style="display: none;">
+                <div class="auth-error" id="signup-error"></div>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password (min 6 chars)" required>
+                <input type="text" id="signup-username" placeholder="Username" required>
+                <button id="signup-submit">Create Account</button>
             </div>
         </div>
-        
-        <!-- Rest of your HTML remains the same -->
-        <!-- (recruitment modal and footer remain unchanged) -->
     </div>
     
     <script>
-        // Supabase Configuration
-        const SUPABASE_URL = 'https://cbfxmjeousokprplredc.supabase.co'; // REPLACE WITH YOUR URL
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZnhtamVvdXNva3BycGxyZWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MTAzOTYsImV4cCI6MjA4MTA4NjM5Nn0.TtFR0f2RDHNh3VM9bjo8IFya1cDOtwKNE-kKWk1HZioy'; // REPLACE WITH YOUR KEY
+        // ==================== SUPABASE CONFIGURATION ====================
+        const SUPABASE_URL = 'https://cbfxmjeousokprplredc.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZnhtamVvdXNva3BycGxyZWRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1MTAzOTYsImV4cCI6MjA4MTA4NjM5Nn0.TtFR0f2RDHNh3VM9bjo8IFya1cDOtwKNE-kKWk1HZio';
+        
+        console.log('Initializing Supabase...');
         
         // Initialize Supabase
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Application State
-        let appState = {
+        // ==================== APPLICATION STATE ====================
+        const appState = {
             currentUser: null,
             audioFiles: [],
             currentTrackIndex: 0,
             isPlaying: false,
-            audioPlayer: null,
             likedTracks: new Set()
         };
         
-        // DOM Elements
+        // ==================== DOM ELEMENTS ====================
         const authSection = document.getElementById('auth-section');
         const authModal = document.getElementById('auth-modal');
         const authToggleBtn = document.getElementById('auth-toggle-btn');
@@ -835,9 +701,9 @@
         const uploadedFilesList = document.getElementById('uploaded-files-list');
         const audioPlayer = document.getElementById('audio-player');
         
-        // Initialize
+        // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
-            appState.audioPlayer = audioPlayer;
+            console.log('DOM loaded, initializing app...');
             
             // Check if user is already logged in
             await checkCurrentUser();
@@ -847,23 +713,33 @@
             
             // Set up event listeners
             setupEventListeners();
+            
+            console.log('App initialized successfully!');
         });
         
-        // Check current user
+        // ==================== AUTHENTICATION FUNCTIONS ====================
         async function checkCurrentUser() {
-            const { data: { session } } = await supabase.auth.getSession();
-            
-            if (session?.user) {
-                appState.currentUser = session.user;
-                updateAuthUI();
-                await loadUserUploads();
-            } else {
-                updateAuthUI();
+            console.log('Checking current user...');
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (session?.user) {
+                    console.log('User found:', session.user.email);
+                    appState.currentUser = session.user;
+                    updateAuthUI();
+                    await loadUserUploads();
+                } else {
+                    console.log('No user found');
+                    updateAuthUI();
+                }
+            } catch (error) {
+                console.error('Error checking user:', error);
             }
         }
         
-        // Update UI based on auth state
         function updateAuthUI() {
+            console.log('Updating auth UI...');
+            
             if (appState.currentUser) {
                 // User is logged in
                 const userInitial = appState.currentUser.email[0].toUpperCase();
@@ -891,7 +767,14 @@
                 loginRequiredBadge.style.display = 'none';
                 uploadArea.classList.remove('upload-restricted');
                 
-                document.getElementById('logout-btn').addEventListener('click', logout);
+                // Add logout event listener
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', logout);
+                }
+                
+                console.log('Auth UI: User logged in');
+                
             } else {
                 // User is not logged in
                 authSection.innerHTML = `
@@ -911,57 +794,137 @@
                 loginRequiredBadge.style.display = 'inline-block';
                 uploadArea.classList.add('upload-restricted');
                 
-                document.getElementById('auth-toggle-btn-top').addEventListener('click', showAuthModal);
+                // Add auth toggle event listener
+                const authToggleTopBtn = document.getElementById('auth-toggle-btn-top');
+                if (authToggleTopBtn) {
+                    authToggleTopBtn.addEventListener('click', showAuthModal);
+                }
+                
+                console.log('Auth UI: User not logged in');
             }
         }
         
-        // Load audio files from Supabase Storage
-        async function loadAudioFiles() {
+        async function login(email, password) {
+            console.log('Attempting login for:', email);
             try {
-                const { data, error } = await supabase.storage
-                    .from('audio_files') // You'll create this bucket
-                    .list();
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password
+                });
                 
+                if (error) {
+                    console.error('Login error:', error.message);
+                    document.getElementById('login-error').textContent = error.message;
+                    document.getElementById('login-error').style.display = 'block';
+                    throw error;
+                }
+                
+                console.log('Login successful:', data.user.email);
+                appState.currentUser = data.user;
+                updateAuthUI();
+                closeAuthModal();
+                await loadUserUploads();
+                showToast('Successfully signed in!');
+                
+            } catch (error) {
+                console.error('Login failed:', error);
+            }
+        }
+        
+        async function signup(email, password, username) {
+            console.log('Attempting signup for:', email);
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            username: username
+                        }
+                    }
+                });
+                
+                if (error) {
+                    console.error('Signup error:', error.message);
+                    document.getElementById('signup-error').textContent = error.message;
+                    document.getElementById('signup-error').style.display = 'block';
+                    throw error;
+                }
+                
+                console.log('Signup successful, check email for confirmation');
+                document.getElementById('signup-error').textContent = 'Account created! Check your email for confirmation.';
+                document.getElementById('signup-error').style.color = 'var(--success)';
+                document.getElementById('signup-error').style.display = 'block';
+                
+                showToast('Account created! Check your email.');
+                
+                // Auto-login after signup
+                setTimeout(async () => {
+                    await login(email, password);
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Signup failed:', error);
+            }
+        }
+        
+        async function logout() {
+            console.log('Logging out...');
+            try {
+                const { error } = await supabase.auth.signOut();
                 if (error) throw error;
                 
-                appState.audioFiles = data.filter(file => 
+                appState.currentUser = null;
+                updateAuthUI();
+                showToast('Successfully logged out!');
+                console.log('Logout successful');
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error logging out', 'error');
+            }
+        }
+        
+        // ==================== AUDIO FILE FUNCTIONS ====================
+        async function loadAudioFiles() {
+            console.log('Loading audio files...');
+            try {
+                const { data, error } = await supabase.storage
+                    .from('audio_files')
+                    .list();
+                
+                if (error) {
+                    console.error('Storage error:', error);
+                    tracksContainer.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: var(--error);">
+                            Storage error: ${error.message}
+                        </div>
+                    `;
+                    return;
+                }
+                
+                console.log('Files found:', data?.length || 0);
+                appState.audioFiles = data ? data.filter(file => 
                     file.name.endsWith('.mp3') || 
                     file.name.endsWith('.wav') ||
                     file.name.endsWith('.flac')
-                );
+                ) : [];
                 
                 renderAudioFiles();
+                
             } catch (error) {
                 console.error('Error loading audio files:', error);
                 tracksContainer.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: var(--error);">
-                        Error loading tracks. Please refresh.
+                        Error loading tracks: ${error.message}
                     </div>
                 `;
             }
         }
         
-        // Load user's uploaded files
-        async function loadUserUploads() {
-            if (!appState.currentUser) return;
-            
-            try {
-                const { data, error } = await supabase
-                    .from('uploads') // You'll create this table
-                    .select('*')
-                    .eq('user_id', appState.currentUser.id)
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                renderUserUploads(data || []);
-            } catch (error) {
-                console.error('Error loading user uploads:', error);
-            }
-        }
-        
-        // Render audio files
         function renderAudioFiles() {
+            console.log('Rendering audio files:', appState.audioFiles.length);
+            
             if (appState.audioFiles.length === 0) {
                 tracksContainer.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: var(--text-light);">
@@ -979,31 +942,73 @@
                     .getPublicUrl(file.name).data.publicUrl;
                 
                 const trackElement = document.createElement('div');
-                trackElement.className = 'playlist-item';
-                trackElement.style.cursor = 'pointer';
-                trackElement.style.padding = '0.75rem';
-                trackElement.style.borderBottom = '1px solid var(--coffee-light)';
-                trackElement.style.display = 'flex';
-                trackElement.style.alignItems = 'center';
-                trackElement.style.gap = '0.75rem';
-                
+                trackElement.className = 'track-list-item';
                 trackElement.innerHTML = `
-                    <div style="color: var(--coffee-accent); font-weight: 600; width: 24px;">${index + 1}</div>
+                    <div class="track-index">${index + 1}</div>
                     <div style="flex: 1;">
                         <div><strong>${file.name.replace(/\.[^/.]+$/, "")}</strong></div>
-                        <div class="file-info-details">${formatFileSize(file.metadata?.size)} • ${file.metadata?.mimetype || 'audio'}</div>
+                        <div class="file-info-details">
+                            ${formatFileSize(file.metadata?.size)} • ${file.metadata?.mimetype || 'audio'}
+                        </div>
                     </div>
-                    <button class="btn" onclick="playTrack('${fileUrl}', '${file.name}')" style="padding: 0.25rem 0.5rem;">
+                    <button class="btn" onclick="playTrack('${fileUrl}', '${file.name.replace(/'/g, "\\'")}')" 
+                            style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">
                         <span>▶️</span> Play
                     </button>
                 `;
                 
                 tracksContainer.appendChild(trackElement);
             });
+            
+            console.log('Audio files rendered');
         }
         
-        // Render user uploads
+        window.playTrack = function(url, filename) {
+            console.log('Playing track:', filename);
+            if (audioPlayer) {
+                audioPlayer.src = url;
+                audioPlayer.play();
+                
+                // Update UI
+                document.getElementById('current-track').textContent = filename.replace(/\.[^/.]+$/, "");
+                document.getElementById('current-artist').textContent = 'Uploaded by user';
+                document.getElementById('album-art').textContent = '🎵';
+                
+                appState.isPlaying = true;
+                showToast(`Now playing: ${filename.replace(/\.[^/.]+$/, "")}`);
+            }
+        };
+        
+        async function loadUserUploads() {
+            if (!appState.currentUser) {
+                console.log('No user, skipping uploads load');
+                return;
+            }
+            
+            console.log('Loading user uploads...');
+            try {
+                const { data, error } = await supabase
+                    .from('uploads')
+                    .select('*')
+                    .eq('user_id', appState.currentUser.id)
+                    .order('created_at', { ascending: false });
+                
+                if (error) {
+                    console.warn('Uploads table might not exist:', error.message);
+                    return;
+                }
+                
+                renderUserUploads(data || []);
+                console.log('User uploads loaded:', data?.length || 0);
+                
+            } catch (error) {
+                console.error('Error loading user uploads:', error);
+            }
+        }
+        
         function renderUserUploads(uploads) {
+            console.log('Rendering user uploads:', uploads.length);
+            
             if (uploads.length === 0) {
                 uploadedFilesList.innerHTML = `
                     <div style="text-align: center; padding: 1rem; color: var(--text-light);">
@@ -1036,32 +1041,19 @@
             });
         }
         
-        // Play a track
-        window.playTrack = function(url, filename) {
-            if (appState.audioPlayer) {
-                appState.audioPlayer.src = url;
-                appState.audioPlayer.play();
-                
-                // Update UI
-                document.getElementById('current-track').textContent = filename.replace(/\.[^/.]+$/, "");
-                document.getElementById('current-artist').textContent = 'Uploaded by user';
-                document.getElementById('album-art').textContent = '🎵';
-                
-                appState.isPlaying = true;
-            }
-        };
-        
-        // Upload file to Supabase
         async function uploadFile(file) {
             if (!appState.currentUser) {
+                console.log('No user, showing auth modal');
                 showAuthModal();
                 return;
             }
             
+            console.log('Uploading file:', file.name);
+            
             try {
                 // Check file type
                 if (!file.type.startsWith('audio/')) {
-                    throw new Error('Please select an audio file');
+                    throw new Error('Please select an audio file (MP3, WAV, etc.)');
                 }
                 
                 // Update status
@@ -1071,36 +1063,52 @@
                 // Generate unique filename
                 const fileExt = file.name.split('.').pop();
                 const fileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+                const filePath = `${appState.currentUser.id}/${fileName}`;
+                
+                console.log('Uploading to path:', filePath);
                 
                 // Upload to Supabase Storage
                 const { data, error } = await supabase.storage
                     .from('audio_files')
-                    .upload(fileName, file, {
+                    .upload(filePath, file, {
                         cacheControl: '3600',
-                        upsert: false,
-                        onUploadProgress: (progress) => {
-                            const percent = (progress.loaded / progress.total) * 100;
-                            document.getElementById('upload-progress').style.width = `${percent}%`;
-                        }
+                        upsert: false
                     });
                 
-                if (error) throw error;
+                if (error) {
+                    console.error('Upload error:', error);
+                    throw error;
+                }
                 
-                // Save upload record to database
-                const { error: dbError } = await supabase
-                    .from('uploads')
-                    .insert({
-                        user_id: appState.currentUser.id,
-                        filename: file.name,
-                        storage_path: data.path,
-                        file_size: file.size,
-                        mime_type: file.type
-                    });
+                console.log('Upload successful, saving to database...');
                 
-                if (dbError) throw dbError;
+                // Try to save to uploads table (might not exist)
+                try {
+                    const { error: dbError } = await supabase
+                        .from('uploads')
+                        .insert({
+                            user_id: appState.currentUser.id,
+                            filename: file.name,
+                            original_filename: file.name,
+                            storage_path: filePath,
+                            file_size: file.size,
+                            mime_type: file.type,
+                            status: 'completed'
+                        });
+                    
+                    if (dbError) {
+                        console.warn('Could not save to uploads table:', dbError.message);
+                        // Continue anyway, this is optional
+                    }
+                } catch (dbError) {
+                    console.warn('Uploads table might not exist, continuing...');
+                }
                 
                 // Update status
                 document.getElementById('status-text').textContent = `${file.name} uploaded successfully!`;
+                document.getElementById('upload-progress').style.width = '100%';
+                
+                showToast(`${file.name} uploaded successfully!`);
                 
                 // Reload files
                 await loadAudioFiles();
@@ -1116,79 +1124,56 @@
                 console.error('Upload error:', error);
                 document.getElementById('status-text').textContent = `Error: ${error.message}`;
                 document.getElementById('upload-progress').style.width = '0%';
+                showToast(`Upload failed: ${error.message}`, 'error');
             }
         }
         
-        // Authentication Functions
-        async function login(email, password) {
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email,
-                    password
-                });
-                
-                if (error) throw error;
-                
-                appState.currentUser = data.user;
-                updateAuthUI();
-                closeAuthModal();
-                await loadUserUploads();
-                
-            } catch (error) {
-                document.getElementById('login-error').textContent = error.message;
-                document.getElementById('login-error').style.display = 'block';
-            }
-        }
-        
-        async function signup(email, password, username) {
-            try {
-                const { data, error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            username: username
-                        }
-                    }
-                });
-                
-                if (error) throw error;
-                
-                document.getElementById('signup-error').textContent = 'Account created! Check your email for confirmation.';
-                document.getElementById('signup-error').style.color = 'var(--success)';
-                document.getElementById('signup-error').style.display = 'block';
-                
-                // Auto-login after signup
-                setTimeout(async () => {
-                    await login(email, password);
-                }, 2000);
-                
-            } catch (error) {
-                document.getElementById('signup-error').textContent = error.message;
-                document.getElementById('signup-error').style.display = 'block';
-            }
-        }
-        
-        async function logout() {
-            await supabase.auth.signOut();
-            appState.currentUser = null;
-            updateAuthUI();
-        }
-        
-        // UI Modal Functions
+        // ==================== UI FUNCTIONS ====================
         function showAuthModal() {
+            console.log('Showing auth modal');
             authModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
         
         function closeAuthModal() {
+            console.log('Closing auth modal');
             authModal.style.display = 'none';
             document.body.style.overflow = 'auto';
         }
         
-        // Helper Functions
+        function showToast(message, type = 'success') {
+            console.log('Toast:', message);
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.padding = '0.75rem 1.5rem';
+            toast.style.background = type === 'error' ? 'var(--error)' : 'var(--success)';
+            toast.style.color = 'white';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            toast.style.zIndex = '3000';
+            toast.style.fontWeight = '500';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // ==================== HELPER FUNCTIONS ====================
         function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
+            if (!bytes || bytes === 0) return '0 Bytes';
             const k = 1024;
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -1196,17 +1181,34 @@
         }
         
         function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric',
-                year: 'numeric'
-            });
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffHours = Math.floor(diffMs / 3600000);
+                const diffDays = Math.floor(diffMs / 86400000);
+                
+                if (diffMins < 1) return 'just now';
+                if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+                if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+                if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+                
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+                });
+            } catch {
+                return 'recently';
+            }
         }
         
-        // Event Listeners Setup
+        // ==================== EVENT LISTENERS SETUP ====================
         function setupEventListeners() {
-            // Auth toggle
+            console.log('Setting up event listeners...');
+            
+            // Auth toggle button
             authToggleBtn.addEventListener('click', showAuthModal);
             
             // Auth modal tabs
@@ -1229,39 +1231,66 @@
             // Login form
             document.getElementById('login-submit').addEventListener('click', async (e) => {
                 e.preventDefault();
-                const email = document.getElementById('login-email').value;
+                const email = document.getElementById('login-email').value.trim();
                 const password = document.getElementById('login-password').value;
+                
+                if (!email || !password) {
+                    document.getElementById('login-error').textContent = 'Please fill in all fields';
+                    document.getElementById('login-error').style.display = 'block';
+                    return;
+                }
+                
                 await login(email, password);
             });
             
             // Signup form
             document.getElementById('signup-submit').addEventListener('click', async (e) => {
                 e.preventDefault();
-                const email = document.getElementById('signup-email').value;
+                const email = document.getElementById('signup-email').value.trim();
                 const password = document.getElementById('signup-password').value;
-                const username = document.getElementById('signup-username').value;
+                const username = document.getElementById('signup-username').value.trim();
+                
+                if (!email || !password || !username) {
+                    document.getElementById('signup-error').textContent = 'Please fill in all fields';
+                    document.getElementById('signup-error').style.display = 'block';
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    document.getElementById('signup-error').textContent = 'Password must be at least 6 characters';
+                    document.getElementById('signup-error').style.display = 'block';
+                    return;
+                }
+                
                 await signup(email, password, username);
             });
             
-            // Close auth modal
+            // Close auth modal when clicking outside
             authModal.addEventListener('click', (e) => {
                 if (e.target === authModal) {
                     closeAuthModal();
                 }
             });
             
-            // File upload
+            // Close auth modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && authModal.style.display === 'flex') {
+                    closeAuthModal();
+                }
+            });
+            
+            // File upload button
             uploadBtn.addEventListener('click', () => {
                 if (appState.currentUser) {
                     const input = document.createElement('input');
                     input.type = 'file';
                     input.accept = 'audio/*';
-                    input.multiple = true;
+                    input.multiple = false; // Start with single file upload
                     
                     input.onchange = async (e) => {
                         const files = Array.from(e.target.files);
-                        for (const file of files) {
-                            await uploadFile(file);
+                        if (files.length > 0) {
+                            await uploadFile(files[0]);
                         }
                     };
                     
@@ -1293,27 +1322,57 @@
                 }
                 
                 const files = Array.from(e.dataTransfer.files);
-                for (const file of files) {
-                    await uploadFile(file);
+                if (files.length > 0) {
+                    await uploadFile(files[0]);
                 }
             });
             
             // Audio player controls
             document.getElementById('play-btn').addEventListener('click', () => {
-                if (appState.audioPlayer.src) {
-                    appState.audioPlayer.play();
+                if (audioPlayer.src) {
+                    audioPlayer.play();
                     appState.isPlaying = true;
+                    showToast('Playing...');
                 }
             });
             
             document.getElementById('pause-btn').addEventListener('click', () => {
-                appState.audioPlayer.pause();
+                audioPlayer.pause();
                 appState.isPlaying = false;
+                showToast('Paused');
             });
+            
+            // Simple previous/next buttons
+            document.getElementById('prev-btn').addEventListener('click', () => {
+                if (appState.audioFiles.length > 0) {
+                    appState.currentTrackIndex = appState.currentTrackIndex > 0 ? 
+                        appState.currentTrackIndex - 1 : appState.audioFiles.length - 1;
+                    const file = appState.audioFiles[appState.currentTrackIndex];
+                    const fileUrl = supabase.storage
+                        .from('audio_files')
+                        .getPublicUrl(file.name).data.publicUrl;
+                    playTrack(fileUrl, file.name);
+                }
+            });
+            
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (appState.audioFiles.length > 0) {
+                    appState.currentTrackIndex = (appState.currentTrackIndex + 1) % appState.audioFiles.length;
+                    const file = appState.audioFiles[appState.currentTrackIndex];
+                    const fileUrl = supabase.storage
+                        .from('audio_files')
+                        .getPublicUrl(file.name).data.publicUrl;
+                    playTrack(fileUrl, file.name);
+                }
+            });
+            
+            console.log('Event listeners setup complete');
         }
         
-        // Listen for auth state changes
+        // ==================== SUPABASE AUTH LISTENER ====================
         supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log('Auth state changed:', event);
+            
             if (event === 'SIGNED_IN' && session) {
                 appState.currentUser = session.user;
                 updateAuthUI();
@@ -1321,8 +1380,13 @@
             } else if (event === 'SIGNED_OUT') {
                 appState.currentUser = null;
                 updateAuthUI();
+            } else if (event === 'INITIAL_SESSION') {
+                // Initial session loaded
+                console.log('Initial session loaded');
             }
         });
+        
+        console.log('Script loaded successfully!');
     </script>
 </body>
 </html>
