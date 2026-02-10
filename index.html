@@ -3,136 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>morning.coffee | Stream & Brew</title>
-    <link rel="stylesheet" href="style.css">
+    <title>morning.coffee | Minimal Streaming</title>
+    <style>
+        /* CSS STYLES */
+        :root {
+            --bg-color: #faf9f6;
+            --text-color: #2c2c2c;
+            --accent: #6f4e37; /* Coffee Brown */
+            --sidebar-bg: #f0ede9;
+            --sidebar-border: #e2ddd9;
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* MAIN PAGE CONTENT */
+        .main-page {
+            width: 95%; /* Default width when sidebar is collapsed */
+            padding: 60px 8%;
+            transition: width var(--transition-speed) ease;
+        }
+
+        .intro h1 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            letter-spacing: -2px;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            max-width: 550px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .recruit-link {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .recruit-link:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .divider {
+            margin: 50px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+
+        .library-section h2 {
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .empty-library {
+            height: 250px;
+            border: 2px dashed #d1cfcd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* RIGHT-SIDE SIDEBAR DRAWER */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            width: 5%; /* Initial width */
+            background-color: var(--sidebar-bg);
+            border-left: 1px solid var(--sidebar-border);
+            z-index: 1000;
+            padding: 20px;
+            overflow: hidden;
+            /* Expands Right to Left */
+            transition: width var(--transition-speed) cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+        }
+
+        /* Hover and Locked states expand to 30% */
+        .sidebar:hover, .sidebar.locked {
+            width: 30%;
+        }
+
+        /* Content inside Sidebar */
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            white-space: nowrap; /* Prevents wrapping during animation */
+        }
+
+        .sidebar:hover .sidebar-header, .sidebar.locked .sidebar-header {
+            opacity: 1;
+        }
+
+        .search-bar {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 6px;
+            width: 65%;
+            outline: none;
+        }
+
+        .login-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: filter 0.2s;
+        }
+
+        .login-btn:hover {
+            filter: brightness(1.2);
+        }
+
+        /* Visual indicator for collapsed state */
+        .sidebar::before {
+            content: '●';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent);
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .sidebar:hover::before, .sidebar.locked::before {
+            opacity: 0;
+        }
+    </style>
 </head>
-<style>
-:root {
-    --bg-color: #fdfaf6;
-    --accent-color: #6f4e37; /* Coffee brown */
-    --text-main: #2d2d2d;
-    --sidebar-bg: #f3ece7;
-}
-
-body {
-    display: flex;
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-main);
-}
-
-/* Sidebar Drawer Logic */
-.sidebar {
-    width: 5%;
-    height: 100vh;
-    background-color: var(--sidebar-bg);
-    overflow: hidden;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: fixed;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 10px;
-    border-right: 1px solid #e0d7d0;
-    z-index: 10;
-}
-
-.sidebar:hover, .sidebar.fixed {
-    width: 35%;
-}
-
-.sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    opacity: 0; /* Hidden when collapsed */
-    transition: opacity 0.3s;
-}
-
-.sidebar:hover .sidebar-header, .sidebar.fixed .sidebar-header {
-    opacity: 1;
-}
-
-.search-bar {
-    width: 60%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.login-btn {
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-/* Main Content Styles */
-.content {
-    margin-left: 5%; /* Matches collapsed sidebar */
-    width: 95%;
-    padding: 50px;
-    transition: margin-left 0.4s;
-}
-
-.intro h1 { font-size: 3rem; margin-bottom: 0.5rem; }
-.recruit-link { color: var(--accent-color); font-weight: bold; text-decoration: underline; }
-
-.placeholder-grid {
-    margin-top: 20px;
-    height: 200px;
-    border: 2px dashed #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-}
-</style>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <input type="text" class="search-bar" placeholder="Search songs...">
-            <button class="login-btn">Login</button>
-        </div>
-        <div class="sidebar-content">
-            <p>Your Playlists</p>
-            </div>
-    </nav>
-
-    <main class="content">
+    <main class="main-page" id="mainPage">
         <section class="intro">
             <h1>morning.coffee</h1>
-            <p>A calm space for the ears. Free streaming, effortless uploads, and no clutter. Just you and the rhythm.</p>
+            <p class="description">
+                A minimalist, free streaming service designed for your daily grind. 
+                Upload your own tracks or discover curated vibes with zero friction. 
+                Focus on the sound, forget the noise.
+            </p>
             
-            <div class="recruitment">
-                <p>Want to help us build the future of sound?</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSceoEoBzkHLj8a0a8RuT0ix_MNtO1k6zcKFI20RqsYS73myiw/viewform?usp=header" target="_blank" class="recruit-link">
-                    Join the Crew
-                </a>
-            </div>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSceoEoBzkHLj8a0a8RuT0ix_MNtO1k6zcKFI20RqsYS73myiw/viewform?usp=header" 
+               target="_blank" class="recruit-link">
+               Join the team →
+            </a>
         </section>
 
-        <hr>
+        <hr class="divider">
 
-        <section class="music-library">
+        <section class="library-section">
             <h2>Your Library</h2>
-            <div id="supabase-placeholder" class="placeholder-grid">
-                <p>Waiting for the beans to grind... (Connect Supabase to see music)</p>
+            <div class="empty-library">
+                <p>Waiting for the beans to grind... (No music found in Supabase yet)</p>
             </div>
         </section>
     </main>
 
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <input type="text" class="search-bar" placeholder="Search music...">
+            
+            <button class="login-btn">Login</button>
+        </div>
+    </nav>
+
     <script>
         const sidebar = document.getElementById('sidebar');
-        const loginBtn = document.querySelector('.login-btn');
+        const mainPage = document.getElementById('mainPage');
 
-        loginBtn.addEventListener('click', () => {
-            sidebar.classList.add('fixed');
-});
+        // 1. Lock the sidebar when clicking anywhere inside it
+        sidebar.addEventListener('click', (e) => {
+            sidebar.classList.add('locked');
+            // Stops the click from reaching the document/mainPage
+            e.stopPropagation();
+        });
+
+        // 2. Unlock/Shrink the sidebar when clicking the main page
+        document.addEventListener('click', (e) => {
+            // If the click is outside the sidebar, remove the locked class
+            if (!sidebar.contains(e.target)) {
+                sidebar.classList.remove('locked');
+            }
+        });
     </script>
 </body>
 </html>
