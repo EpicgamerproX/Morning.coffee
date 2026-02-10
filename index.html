@@ -6,6 +6,7 @@
     <title>morning.coffee | The World's Most Focused Music Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --glass-bg: rgba(255, 255, 255, 0.12);
@@ -700,112 +701,252 @@
     </nav>
 
     <script>
-        const sidebar = document.getElementById('sidebar');
-        const loginTrigger = document.getElementById('loginTrigger');
-        const mainPage = document.getElementById('mainPage');
-        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
-        const coffeeBeans = document.getElementById('coffeeBeans');
-        
-        // Create animated coffee beans background
-        function createCoffeeBeans() {
-            const beanCount = 20;
-            for (let i = 0; i < beanCount; i++) {
-                const bean = document.createElement('div');
-                bean.classList.add('bean');
-                
-                // Random properties
-                const size = Math.random() * 30 + 10;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = Math.random() * 20 + 10;
-                
-                bean.style.width = `${size}px`;
-                bean.style.height = `${size}px`;
-                bean.style.left = `${left}%`;
-                bean.style.animationDelay = `${delay}s`;
-                bean.style.animationDuration = `${duration}s`;
-                
-                coffeeBeans.appendChild(bean);
-            }
+    const supabaseUrl = 'https://sxqymzynnjrjftjuazsu.supabase.co'  // ← CHANGE THIS
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4cXltenlubmpyamZ0anVhenN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3MTUzMTUsImV4cCI6MjA4NjI5MTMxNX0.pdySb7u7Bt6WGExEG4GUWI0QpRSCVmYA7jm8dp4-7j0'              // ← CHANGE THIS
+    const supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey)
+
+    const sidebar = document.getElementById('sidebar')
+    const loginTrigger = document.getElementById('loginTrigger')
+    const loginForm = document.getElementById('loginForm')
+    const mobileLoginBtn = document.getElementById('mobileLoginBtn')
+
+    let currentUser = null
+
+    // Initialize coffee beans
+    function createCoffeeBeans() {
+        const beanCount = 20
+        const container = document.getElementById('coffeeBeans')
+        container.innerHTML = ''
+        for (let i = 0; i < beanCount; i++) {
+            const bean = document.createElement('div')
+            bean.classList.add('bean')
+            const size = Math.random() * 30 + 10
+            bean.style.width = `${size}px`
+            bean.style.height = `${size}px`
+            bean.style.left = `${Math.random() * 100}%`
+            bean.style.animationDelay = `-${Math.random() * 15}s`
+            bean.style.animationDuration = `${Math.random() * 20 + 15}s`
+            container.appendChild(bean)
         }
-        
-        // Logic to expand and show login credentials
-        loginTrigger.addEventListener('click', (e) => {
-            sidebar.classList.add('locked');
-            sidebar.classList.add('active-login');
-            e.stopPropagation();
-        });
-        
-        // Mobile login button
-        mobileLoginBtn.addEventListener('click', () => {
-            sidebar.style.display = 'flex';
-            sidebar.classList.add('locked');
-            sidebar.classList.add('active-login');
-        });
+    }
 
-        // Click sidebar to lock expansion
-        sidebar.addEventListener('click', (e) => {
-            sidebar.classList.add('locked');
-            e.stopPropagation();
-        });
+    // Show logged-in sidebar
+    async function renderLoggedInSidebar(user) {
+        currentUser = user
+        loginForm.innerHTML = `
+            <div style="padding: 20px; text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">☕</div>
+                <h3>Welcome, ${user.email.split('@')[0]}</h3>
+                <p style="opacity: 0.7; margin: 15px 0;">Your Personal Cafe</p>
 
-        // Click main page to shrink and hide login
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target)) {
-                sidebar.classList.remove('locked');
-                sidebar.classList.remove('active-login');
-                
-                // On mobile, hide sidebar completely when clicking outside
-                if (window.innerWidth <= 768) {
-                    sidebar.style.display = 'none';
+                <!-- Drag & Drop Zone -->
+                <div id="dropzone" class="drop-zone" style="
+                    border: 2px dashed var(--accent);
+                    border-radius: 16px;
+                    padding: 40px 20px;
+                    margin: 25px 0;
+                    background: rgba(230, 190, 138, 0.05);
+                    transition: all 0.3s;
+                    cursor: pointer;
+                    text-align: center;
+                ">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; opacity: 0.6; margin-bottom: 15px;"></i>
+                    <p><strong>Drag & drop audio files here</strong></p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">MP3, WAV, OGG • Max 50MB per file</p>
+                </div>
+
+                <div style="margin: 25px 0;">
+                    <h4 style="text-align: left; margin-bottom: 15px; opacity: 0.8;">My Blends</h4>
+                    <div id="my-blends-list" style="max-height: 400px; overflow-y: auto;"></div>
+                </div>
+
+                <button onclick="logout()" style="margin-top: 20px; background: #444; color: white; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer;">
+                    Sign Out
+                </button>
+            </div>
+        `
+
+        setupDropZone()
+        await fetchAndRenderMyBlends()
+    }
+
+    function setupDropZone() {
+        const dropzone = document.getElementById('dropzone')
+        if (!dropzone) return
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault()
+            dropzone.style.background = 'rgba(230, 190, 138, 0.15)'
+            dropzone.style.borderColor = '#e6be8a'
+        })
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.style.background = 'rgba(230, 190, 138, 0.05)'
+            dropzone.style.borderColor = 'var(--accent)'
+        })
+
+        dropzone.addEventListener('drop', async (e) => {
+            e.preventDefault()
+            dropzone.style.background = 'rgba(230, 190, 138, 0.05)'
+            dropzone.style.borderColor = 'var(--accent)'
+
+            const files = e.dataTransfer.files
+            for (let file of files) {
+                if (file.type.startsWith('audio/')) {
+                    await uploadMusicFile(file)
+                } else {
+                    alert('Please upload audio files only (MP3, WAV, OGG)')
                 }
             }
-        });
-        
-        // Animate blend cards on scroll
-        function animateOnScroll() {
-            const cards = document.querySelectorAll('.blend-card');
-            cards.forEach(card => {
-                const cardPosition = card.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.2;
-                
-                if (cardPosition < screenPosition) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }
-            });
+        })
+    }
+
+    async function uploadMusicFile(file) {
+        if (!currentUser) return
+
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${Date.now()}-${file.name}`
+        const filePath = `${currentUser.id}/${fileName}`
+
+        const loadingMsg = document.createElement('div')
+        loadingMsg.textContent = `Uploading ${file.name}...`
+        loadingMsg.style.margin = '10px 0'
+        document.getElementById('my-blends-list').prepend(loadingMsg)
+
+        try {
+            const { data, error } = await supabase.storage
+                .from('blends')
+                .upload(filePath, file, { upsert: false })
+
+            if (error) throw error
+
+            // Save metadata to database
+            const { error: dbError } = await supabase
+                .from('user_blends')
+                .insert({
+                    user_id: currentUser.id,
+                    title: file.name.replace(/\.[^/.]+$/, ""),
+                    file_path: filePath
+                })
+
+            if (dbError) throw dbError
+
+            alert(`✅ ${file.name} uploaded successfully!`)
+            await fetchAndRenderMyBlends()
+
+        } catch (error) {
+            console.error(error)
+            alert('Upload failed: ' + error.message)
         }
-        
-        // Initialize blend card animation
-        document.querySelectorAll('.blend-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        });
-        
-        // Initialize
-        createCoffeeBeans();
-        window.addEventListener('scroll', animateOnScroll);
-        window.addEventListener('load', () => {
-            // Trigger initial animation
-            setTimeout(animateOnScroll, 300);
-        });
-        
-        // Play button interaction
-        document.querySelectorAll('.play-button').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                alert("🎵 Now playing this blend! (Demo functionality)");
-            });
-        });
-        
-        // Demo search functionality
-        const searchInput = document.querySelector('.sidebar-search');
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                alert(`🔍 Searching for: "${searchInput.value}" (Demo functionality)`);
+    }
+
+    async function fetchAndRenderMyBlends() {
+        if (!currentUser) return
+
+        const { data, error } = await supabase
+            .from('user_blends')
+            .select('*')
+            .order('created_at', { ascending: false })
+
+        const container = document.getElementById('my-blends-list')
+        if (!container) return
+
+        container.innerHTML = ''
+
+        if (error || !data || data.length === 0) {
+            container.innerHTML = `<p style="opacity:0.6; text-align:center; padding:20px;">No blends yet. Drag & drop to get started.</p>`
+            return
+        }
+
+        data.forEach(blend => {
+            const div = document.createElement('div')
+            div.style = "padding: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 10px; cursor: pointer;"
+            div.innerHTML = `
+                <div style="font-weight:600;">${blend.title}</div>
+                <div style="font-size:0.8rem; opacity:0.7;">Uploaded • ${new Date(blend.created_at).toLocaleDateString()}</div>
+            `
+            div.onclick = () => {
+                const publicUrl = `${supabaseUrl}/storage/v1/object/public/blends/${blend.file_path}`
+                alert(`Now playing: ${blend.title}\n\nURL: ${publicUrl}`)
+                // You can replace alert with actual audio player later
             }
-        });
-    </script>
+            container.appendChild(div)
+        })
+    }
+
+    function logout() {
+        supabase.auth.signOut()
+        location.reload()
+    }
+
+    // Handle login form submission
+    document.addEventListener('click', async (e) => {
+        if (e.target.classList.contains('confirm-btn')) {
+            const emailInput = loginForm.querySelector('input[type="email"]')
+            const passwordInput = loginForm.querySelector('input[type="password"]')
+
+            if (!emailInput || !passwordInput) return
+
+            const email = emailInput.value.trim()
+            const password = passwordInput.value
+
+            if (!email || !password) {
+                alert("Please enter email and password")
+                return
+            }
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+                if (error) throw error
+
+                await renderLoggedInSidebar(data.user)
+                sidebar.classList.add('locked', 'active-login')
+
+            } catch (error) {
+                alert("Login failed: " + error.message)
+            }
+        }
+    })
+
+    // Auth state listener
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (session?.user) {
+            renderLoggedInSidebar(session.user)
+            sidebar.classList.add('locked', 'active-login')
+        } else {
+            // Show login form
+            loginForm.style.display = 'flex'
+            loginForm.style.opacity = '1'
+        }
+    })
+
+    // Keep existing click handlers
+    loginTrigger.addEventListener('click', (e) => {
+        sidebar.classList.add('locked', 'active-login')
+        e.stopPropagation()
+    })
+
+    mobileLoginBtn.addEventListener('click', () => {
+        sidebar.style.display = 'flex'
+        sidebar.classList.add('locked', 'active-login')
+    })
+
+    // Click outside to collapse
+    document.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target)) {
+            sidebar.classList.remove('locked', 'active-login')
+            if (window.innerWidth <= 768) sidebar.style.display = 'none'
+        }
+    })
+
+    // Initialize
+    createCoffeeBeans()
+
+    // Check if already logged in on page load
+    supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) renderLoggedInSidebar(session.user)
+    })
+</script>
 </body>
 </html>
