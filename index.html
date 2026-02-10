@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>morning.coffee | Claymorphic Edition</title>
+    <title>morning.coffee | Glassmorphic Stream</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f0f2f5;
-            --clay-bg: #f0f2f5;
-            --accent-clay: #ffffff;
-            --coffee-brown: #6f4e37;
-            --shadow-out: 12px 12px 24px #bebebe, -12px -12px 24px #ffffff;
-            --shadow-in: inset 6px 6px 12px #bebebe, inset -6px -6px 12px #ffffff;
-            --transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --accent: #e6be8a; /* Latte Gold */
+            --text-color: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #3d2b1f 100%);
         }
 
         * {
@@ -22,174 +21,207 @@
         }
 
         body {
-            font-family: 'Rounded Mplus 1c', 'Segoe UI', sans-serif;
-            background-color: var(--bg-color);
-            color: #444;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* --- MAIN PAGE --- */
+        /* --- MAIN CONTENT AREA --- */
         .main-page {
             width: 95%;
-            padding: 80px 10%;
-            transition: opacity 0.4s;
+            padding: 80px 8%;
+            transition: all 0.5s ease;
         }
 
-        .clay-card {
-            background: var(--clay-bg);
-            border-radius: 35px;
-            box-shadow: var(--shadow-out);
-            padding: 40px;
-            margin-bottom: 40px;
+        .hero-section {
+            margin-bottom: 60px;
         }
 
-        h1 { font-size: 3rem; margin-bottom: 20px; color: var(--coffee-brown); }
-        .description { line-height: 1.6; font-size: 1.1rem; max-width: 600px; }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        .recruit-link {
+        .description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        /* Recruitment Link Glass Card */
+        .recruit-card {
             display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: var(--clay-bg);
-            border-radius: 20px;
-            box-shadow: var(--shadow-out);
-            color: var(--coffee-brown);
+            padding: 20px 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            color: var(--accent);
             text-decoration: none;
-            font-weight: bold;
-            transition: var(--transition);
+            font-weight: 600;
+            transition: 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        .recruit-link:hover {
-            box-shadow: var(--shadow-in);
-            transform: scale(0.98);
+        .recruit-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+            border-color: var(--accent);
         }
 
-        .library-section {
-            margin-top: 60px;
-            min-height: 300px;
+        /* Music Library Grid */
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .music-slot {
+            height: 250px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .empty-slot {
-            height: 150px;
-            border-radius: 30px;
-            box-shadow: var(--shadow-in);
-            display: flex;
             align-items: center;
             justify-content: center;
-            color: #aaa;
+            transition: 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- CLAYMORPHIC SIDEBAR (RIGHT) --- */
+        .music-slot:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(230, 190, 138, 0.2);
+            transform: scale(1.03);
+        }
+
+        .music-slot::after {
+            content: 'COMING SOON';
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            opacity: 0.5;
+        }
+
+        /* --- GLASS SIDEBAR (RIGHT) --- */
         .sidebar {
             position: fixed;
             right: 0;
             top: 0;
             height: 100vh;
             width: 5%;
-            background: var(--clay-bg);
-            border-left: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-left: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px 10px;
-            transition: width var(--transition);
+            padding: 20px;
+            transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 1000;
             cursor: pointer;
         }
 
         .sidebar:hover, .sidebar.locked {
             width: 30%;
-            padding: 40px 30px;
+            background: rgba(0, 0, 0, 0.4);
         }
 
-        /* Initial Login Button (Visible when collapsed) */
+        /* Initial View: Top Right Login */
         .initial-login-btn {
-            width: 100%;
-            padding: 15px 5px;
-            border-radius: 15px;
-            background: var(--clay-bg);
-            box-shadow: var(--shadow-out);
+            position: absolute;
+            top: 20px;
+            right: 15px;
+            background: var(--accent);
+            color: #222;
             border: none;
-            color: var(--coffee-brown);
-            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 700;
             cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
+            transition: 0.3s;
         }
 
-        /* Login Form Container (Hidden initially) */
-        .login-container {
+        .sidebar:hover .initial-login-btn {
+            right: 20px;
+        }
+
+        /* Login Form - Hidden by default */
+        .login-form-container {
             display: none;
-            opacity: 0;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            width: 100%;
-            height: 80%;
+            height: 100%;
             gap: 20px;
+            opacity: 0;
             transition: opacity 0.5s ease;
         }
 
-        /* Show form when sidebar is "active" */
-        .sidebar.active-login .login-container {
+        .sidebar.active-login .login-form-container {
             display: flex;
             opacity: 1;
         }
 
         .sidebar.active-login .initial-login-btn {
-            display: none;
+            display: none; /* Hide top button when form is active */
         }
 
-        /* Claymorphic Inputs */
-        .clay-input {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 20px;
-            border: none;
-            background: var(--clay-bg);
-            box-shadow: var(--shadow-in);
+        .glass-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
             outline: none;
-            color: #444;
+            width: 100%;
+        }
+
+        .glass-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .confirm-btn {
-            margin-top: 10px;
-            width: 100%;
-            padding: 15px;
-            border-radius: 20px;
+            background: var(--accent);
+            color: #000;
             border: none;
-            background: var(--coffee-brown);
-            color: white;
-            font-weight: bold;
-            box-shadow: 5px 5px 15px #bcbcbc;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            margin-top: 10px;
+            transition: 0.3s;
         }
 
         .confirm-btn:hover {
+            box-shadow: 0 0 15px var(--accent);
             transform: translateY(-2px);
-            box-shadow: 8px 8px 20px #bcbcbc;
         }
 
-        /* Search bar inside expanded sidebar */
         .sidebar-search {
+            margin-bottom: 30px;
             width: 100%;
-            margin-bottom: 40px;
-            padding: 12px;
-            border-radius: 15px;
-            border: none;
-            background: var(--clay-bg);
-            box-shadow: var(--shadow-in);
-            display: none;
         }
 
-        .sidebar.locked .sidebar-search {
-            display: block;
+        /* Distinguishable Heading in Sidebar */
+        .sidebar-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-align: center;
         }
 
     </style>
@@ -197,60 +229,64 @@
 <body>
 
     <main class="main-page" id="mainPage">
-        <div class="clay-card">
+        <section class="hero-section">
             <h1>morning.coffee</h1>
             <p class="description">
-                A tactile, minimalist space for your soundscapes. 
-                Whether you're brewing code or coffee, stream effortlessly 
-                and upload your own blends to our cloud.
+                The finest minimalist audio experience. No ads, no noise, just pure sound. 
+                Upload your beans, share your blends, and stream the world's most focused music.
             </p>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSceoEoBzkHLj8a0a8RuT0ix_MNtO1k6zcKFI20RqsYS73myiw/viewform?usp=header" 
-               target="_blank" class="recruit-link">
-               Join the Crew
+               target="_blank" class="recruit-card">
+               BECOME A ROASTER (Join Us)
             </a>
-        </div>
+        </section>
 
         <section class="library-section">
-            <h2>Music Library</h2>
-            <div class="empty-slot">Your playlists will float here soon...</div>
-            <div class="empty-slot" style="opacity: 0.6;">(Connect to Supabase Bucket)</div>
+            <h2 style="font-weight: 300; letter-spacing: 2px;">DISCOVER BLENDS</h2>
+            <div class="library-grid">
+                <div class="music-slot"></div>
+                <div class="music-slot"></div>
+                <div class="music-slot"></div>
+                <div class="music-slot"></div>
+            </div>
         </section>
     </main>
 
     <nav class="sidebar" id="sidebar">
-        <button class="initial-login-btn" id="triggerLogin">LOGIN</button>
+        <button class="initial-login-btn" id="loginTrigger">LOGIN</button>
 
-        <div class="login-container">
-            <input type="text" class="sidebar-search" placeholder="Search sounds...">
+        <div class="login-form-container" id="loginForm">
+            <h2 class="sidebar-header">Member Access</h2>
             
-            <h3 style="margin-bottom: 10px; color: var(--coffee-brown);">Welcome Back</h3>
+            <input type="text" class="glass-input sidebar-search" placeholder="Search library...">
             
-            <input type="text" class="clay-input" placeholder="Email">
-            <input type="password" class="clay-input" placeholder="Password">
-            
-            <button class="confirm-btn">Confirm Coffee</button>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="email" class="glass-input" placeholder="Email Address">
+                <input type="password" class="glass-input" placeholder="Password">
+                <button class="confirm-btn">ENTER CAFE</button>
+            </div>
         </div>
     </nav>
 
     <script>
         const sidebar = document.getElementById('sidebar');
-        const triggerLogin = document.getElementById('triggerLogin');
+        const loginTrigger = document.getElementById('loginTrigger');
         const mainPage = document.getElementById('mainPage');
 
-        // Expand and switch to Login Form
-        triggerLogin.addEventListener('click', (e) => {
+        // Logic to expand and show login credentials
+        loginTrigger.addEventListener('click', (e) => {
             sidebar.classList.add('locked');
             sidebar.classList.add('active-login');
-            e.stopPropagation();
+            e.stopPropagation(); // Prevents immediate unlock
         });
 
-        // Clicking anywhere in the sidebar locks it
+        // Click sidebar to lock expansion
         sidebar.addEventListener('click', (e) => {
             sidebar.classList.add('locked');
             e.stopPropagation();
         });
 
-        // Clicking the main page unlocks and resets the sidebar
+        // Click main page to shrink and hide login
         document.addEventListener('click', (e) => {
             if (!sidebar.contains(e.target)) {
                 sidebar.classList.remove('locked');
