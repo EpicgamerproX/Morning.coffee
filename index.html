@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>morning.coffee | Minimal Streaming</title>
+    <title>morning.coffee | Claymorphic Edition</title>
     <style>
-        /* CSS STYLES */
         :root {
-            --bg-color: #faf9f6;
-            --text-color: #2c2c2c;
-            --accent: #6f4e37; /* Coffee Brown */
-            --sidebar-bg: #f0ede9;
-            --sidebar-border: #e2ddd9;
-            --transition-speed: 0.4s;
+            --bg-color: #f0f2f5;
+            --clay-bg: #f0f2f5;
+            --accent-clay: #ffffff;
+            --coffee-brown: #6f4e37;
+            --shadow-out: 12px 12px 24px #bebebe, -12px -12px 24px #ffffff;
+            --shadow-in: inset 6px 6px 12px #bebebe, inset -6px -6px 12px #ffffff;
+            --transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
@@ -22,199 +22,239 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Rounded Mplus 1c', 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: #444;
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* MAIN PAGE CONTENT */
+        /* --- MAIN PAGE --- */
         .main-page {
-            width: 95%; /* Default width when sidebar is collapsed */
-            padding: 60px 8%;
-            transition: width var(--transition-speed) ease;
+            width: 95%;
+            padding: 80px 10%;
+            transition: opacity 0.4s;
         }
 
-        .intro h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: -2px;
-            margin-bottom: 15px;
+        .clay-card {
+            background: var(--clay-bg);
+            border-radius: 35px;
+            box-shadow: var(--shadow-out);
+            padding: 40px;
+            margin-bottom: 40px;
         }
 
-        .description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            max-width: 550px;
-            color: #555;
-            margin-bottom: 25px;
-        }
+        h1 { font-size: 3rem; margin-bottom: 20px; color: var(--coffee-brown); }
+        .description { line-height: 1.6; font-size: 1.1rem; max-width: 600px; }
 
         .recruit-link {
             display: inline-block;
-            color: var(--accent);
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: var(--clay-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-out);
+            color: var(--coffee-brown);
             text-decoration: none;
-            font-weight: 600;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.3s;
+            font-weight: bold;
+            transition: var(--transition);
         }
 
         .recruit-link:hover {
-            border-bottom-color: var(--accent);
+            box-shadow: var(--shadow-in);
+            transform: scale(0.98);
         }
 
-        .divider {
-            margin: 50px 0;
-            border: 0;
-            border-top: 1px solid #ddd;
+        .library-section {
+            margin-top: 60px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .library-section h2 {
-            font-weight: 400;
-            margin-bottom: 20px;
-        }
-
-        .empty-library {
-            height: 250px;
-            border: 2px dashed #d1cfcd;
-            border-radius: 12px;
+        .empty-slot {
+            height: 150px;
+            border-radius: 30px;
+            box-shadow: var(--shadow-in);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #999;
-            font-style: italic;
+            color: #aaa;
         }
 
-        /* RIGHT-SIDE SIDEBAR DRAWER */
+        /* --- CLAYMORPHIC SIDEBAR (RIGHT) --- */
         .sidebar {
             position: fixed;
             right: 0;
             top: 0;
             height: 100vh;
-            width: 5%; /* Initial width */
-            background-color: var(--sidebar-bg);
-            border-left: 1px solid var(--sidebar-border);
+            width: 5%;
+            background: var(--clay-bg);
+            border-left: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            transition: width var(--transition);
             z-index: 1000;
-            padding: 20px;
-            overflow: hidden;
-            /* Expands Right to Left */
-            transition: width var(--transition-speed) cubic-bezier(0.165, 0.84, 0.44, 1);
             cursor: pointer;
         }
 
-        /* Hover and Locked states expand to 30% */
         .sidebar:hover, .sidebar.locked {
             width: 30%;
+            padding: 40px 30px;
         }
 
-        /* Content inside Sidebar */
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Initial Login Button (Visible when collapsed) */
+        .initial-login-btn {
+            width: 100%;
+            padding: 15px 5px;
+            border-radius: 15px;
+            background: var(--clay-bg);
+            box-shadow: var(--shadow-out);
+            border: none;
+            color: var(--coffee-brown);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        /* Login Form Container (Hidden initially) */
+        .login-container {
+            display: none;
             opacity: 0;
-            transition: opacity 0.3s ease;
-            white-space: nowrap; /* Prevents wrapping during animation */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 80%;
+            gap: 20px;
+            transition: opacity 0.5s ease;
         }
 
-        .sidebar:hover .sidebar-header, .sidebar.locked .sidebar-header {
+        /* Show form when sidebar is "active" */
+        .sidebar.active-login .login-container {
+            display: flex;
             opacity: 1;
         }
 
-        .search-bar {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 6px;
-            width: 65%;
-            outline: none;
+        .sidebar.active-login .initial-login-btn {
+            display: none;
         }
 
-        .login-btn {
-            background-color: var(--accent);
-            color: white;
+        /* Claymorphic Inputs */
+        .clay-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 20px;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            background: var(--clay-bg);
+            box-shadow: var(--shadow-in);
+            outline: none;
+            color: #444;
+        }
+
+        .confirm-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 15px;
+            border-radius: 20px;
+            border: none;
+            background: var(--coffee-brown);
+            color: white;
+            font-weight: bold;
+            box-shadow: 5px 5px 15px #bcbcbc;
             cursor: pointer;
-            font-weight: 500;
-            transition: filter 0.2s;
+            transition: var(--transition);
         }
 
-        .login-btn:hover {
-            filter: brightness(1.2);
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 20px #bcbcbc;
         }
 
-        /* Visual indicator for collapsed state */
-        .sidebar::before {
-            content: '●';
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            color: var(--accent);
-            opacity: 0.3;
-            transition: opacity 0.3s;
+        /* Search bar inside expanded sidebar */
+        .sidebar-search {
+            width: 100%;
+            margin-bottom: 40px;
+            padding: 12px;
+            border-radius: 15px;
+            border: none;
+            background: var(--clay-bg);
+            box-shadow: var(--shadow-in);
+            display: none;
         }
 
-        .sidebar:hover::before, .sidebar.locked::before {
-            opacity: 0;
+        .sidebar.locked .sidebar-search {
+            display: block;
         }
+
     </style>
 </head>
 <body>
 
     <main class="main-page" id="mainPage">
-        <section class="intro">
+        <div class="clay-card">
             <h1>morning.coffee</h1>
             <p class="description">
-                A minimalist, free streaming service designed for your daily grind. 
-                Upload your own tracks or discover curated vibes with zero friction. 
-                Focus on the sound, forget the noise.
+                A tactile, minimalist space for your soundscapes. 
+                Whether you're brewing code or coffee, stream effortlessly 
+                and upload your own blends to our cloud.
             </p>
-            
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSceoEoBzkHLj8a0a8RuT0ix_MNtO1k6zcKFI20RqsYS73myiw/viewform?usp=header" 
                target="_blank" class="recruit-link">
-               Join the team →
+               Join the Crew
             </a>
-        </section>
-
-        <hr class="divider">
+        </div>
 
         <section class="library-section">
-            <h2>Your Library</h2>
-            <div class="empty-library">
-                <p>Waiting for the beans to grind... (No music found in Supabase yet)</p>
-            </div>
+            <h2>Music Library</h2>
+            <div class="empty-slot">Your playlists will float here soon...</div>
+            <div class="empty-slot" style="opacity: 0.6;">(Connect to Supabase Bucket)</div>
         </section>
     </main>
 
     <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <input type="text" class="search-bar" placeholder="Search music...">
+        <button class="initial-login-btn" id="triggerLogin">LOGIN</button>
+
+        <div class="login-container">
+            <input type="text" class="sidebar-search" placeholder="Search sounds...">
             
-            <button class="login-btn">Login</button>
+            <h3 style="margin-bottom: 10px; color: var(--coffee-brown);">Welcome Back</h3>
+            
+            <input type="text" class="clay-input" placeholder="Email">
+            <input type="password" class="clay-input" placeholder="Password">
+            
+            <button class="confirm-btn">Confirm Coffee</button>
         </div>
     </nav>
 
     <script>
         const sidebar = document.getElementById('sidebar');
+        const triggerLogin = document.getElementById('triggerLogin');
         const mainPage = document.getElementById('mainPage');
 
-        // 1. Lock the sidebar when clicking anywhere inside it
-        sidebar.addEventListener('click', (e) => {
+        // Expand and switch to Login Form
+        triggerLogin.addEventListener('click', (e) => {
             sidebar.classList.add('locked');
-            // Stops the click from reaching the document/mainPage
+            sidebar.classList.add('active-login');
             e.stopPropagation();
         });
 
-        // 2. Unlock/Shrink the sidebar when clicking the main page
+        // Clicking anywhere in the sidebar locks it
+        sidebar.addEventListener('click', (e) => {
+            sidebar.classList.add('locked');
+            e.stopPropagation();
+        });
+
+        // Clicking the main page unlocks and resets the sidebar
         document.addEventListener('click', (e) => {
-            // If the click is outside the sidebar, remove the locked class
             if (!sidebar.contains(e.target)) {
                 sidebar.classList.remove('locked');
+                sidebar.classList.remove('active-login');
             }
         });
     </script>
